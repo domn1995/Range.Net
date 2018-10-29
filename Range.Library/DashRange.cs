@@ -1,13 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Range.Library
 {
     public class DashRange : BaseRange
     {
-        public DashRange(string range) : base(range) { }
+        private static readonly Regex regex = new Regex(@"(-?\d+)-?(-?\d+)?", RegexOptions.Compiled);
 
-        public override IEnumerator<string> GetEnumerator() => new DashRangeEnumerator(Range);
+        private readonly int start;
+        private readonly int end;
+
+        public DashRange(string range) : base(range)
+        {
+            if (string.IsNullOrWhiteSpace(range))
+            {
+                end = -1;
+                start = 0;
+                return;
+            }
+
+            Match match = regex.Match(range);
+            GroupCollection groups = match.Groups;
+            start = int.Parse(groups[1].Value);
+            end = !groups[2].Success ? start : int.Parse(groups[2].Value);
+        }
+
+        public override IEnumerator<string> GetEnumerator() => new DashRangeEnumerator(start, end);
 
         private struct DashRangeEnumerator : IEnumerator<string>
         {
@@ -19,32 +39,11 @@ namespace Range.Library
 
             object IEnumerator.Current => Current;
 
-            public DashRangeEnumerator(string range)
+            public DashRangeEnumerator(int start, int end)
             {
                 Current = "";
-
-                // Handle empty range.
-                if (string.IsNullOrWhiteSpace(range))
-                {
-                    end = -1;
-                    start = 0;
-                    index = start;
-                    return;
-                }
-
-                // Handle a range that doesn't contain a dash.
-                if (!range.Contains("-"))
-                {
-                    start = int.Parse(range);
-                    end = index = start;
-                    return;
-                }
-
-                // Handle a normal range.
-                string[] values = range.Split('-');
-                start = int.Parse(values[0]);
-                index = start;
-                end = values.Length > 1 ? int.Parse(values[1]) : start;
+                this.start = index = start;
+                this.end = end;
             }
 
             public bool MoveNext()

@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Range.Library
 {
     public class CommaRange : BaseRange
     {
-        public CommaRange(string range) : base(range) { }
+        private readonly string[] values;
 
-        public override IEnumerator<string> GetEnumerator() => new CommaRangeEnumerator(Range);
+        public CommaRange(string range) : base(range)
+        {
+            values = range.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        public override IEnumerator<string> GetEnumerator() => new CommaRangeEnumerator(values);
 
         private struct CommaRangeEnumerator : IEnumerator<string>
         {
@@ -19,11 +25,11 @@ namespace Range.Library
 
             object IEnumerator.Current => Current;
 
-            public CommaRangeEnumerator(string range)
+            public CommaRangeEnumerator(string[] values)
             {
                 index = 0;
                 Current = "";
-                values = range.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                this.values = values;
             }
             
             public bool MoveNext()
