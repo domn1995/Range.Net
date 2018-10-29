@@ -11,8 +11,11 @@ namespace Range.Test
         [InlineData("", new string[] { })]
         [InlineData("1", new string[] { "1" })]
         [InlineData("1,", new string[] { "1" })]
+        [InlineData("-1", new string[] { "-1" })]
         [InlineData("1,2,3", new string[] { "1", "2", "3"})]
         [InlineData("1,2,3,", new string[] { "1", "2", "3"})]
+        [InlineData("-1,2,-3,", new string[] { "-1", "2", "-3"})]
+        [InlineData("-1,0,1,", new string[] { "-1", "0", "1"})]
         [InlineData("0,3,100,254", new string[] { "0", "3", "100", "254" })]
         public void Test(string rangeStr, string[] expected)
         {
