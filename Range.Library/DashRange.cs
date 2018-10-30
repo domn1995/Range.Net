@@ -75,14 +75,14 @@ namespace Range.Library
             /// <inheritdoc />
             public bool MoveNext()
             {
-                if (index <= end)
+                if (index > end)
                 {
-                    Current = index.ToString();
-                    index++;
-                    return true;
+                    return false;
                 }
 
-                return false;
+                Current = index.ToString();
+                index++;
+                return true;
             }
 
             /// <inheritdoc />

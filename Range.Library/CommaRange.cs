@@ -54,14 +54,14 @@ namespace Range.Library
             /// <inheritdoc />
             public bool MoveNext()
             {
-                if (index < values.Length)
+                if (index >= values.Length)
                 {
-                    Current = values[index];
-                    index++;
-                    return true;
+                    return false;
                 }
 
-                return false;
+                Current = values[index];
+                index++;
+                return true;
             }
 
             /// <inheritdoc />
