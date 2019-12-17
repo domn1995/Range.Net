@@ -27,6 +27,10 @@ namespace Range.Library.Dash
         {
             Match match = regex.Match(range);
             GroupCollection groups = match.Groups;
+            if (groups.Count != 3)
+            {
+                throw new RangeException($"Invalid dash range string '{range}'.");
+            }
             start = int.Parse(groups[1].Value);
             end = int.Parse(groups[2].Value);
         }
