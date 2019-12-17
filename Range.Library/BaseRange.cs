@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace Range.Library
 {
     /// <summary>
-    /// An abstract representation of a range that can be enumerated and is defined with a string.
+    /// An abstract representation of a generic range that can be enumerated and is defined with a string.
     /// </summary>
-    public abstract class BaseRange : IEnumerable<string>
+    public abstract class BaseRange<T> : IEnumerable<T>
     {
         /// <summary>
         /// Gets the original range string.
@@ -26,7 +26,7 @@ namespace Range.Library
         /// Gets this range's enumerator, providing foreach support.
         /// </summary>
         /// <returns>A string enumerator for this range.</returns>
-        public abstract IEnumerator<string> GetEnumerator();
+        public abstract IEnumerator<T> GetEnumerator();
 
         /// <inheritdoc />
         /// <summary>
